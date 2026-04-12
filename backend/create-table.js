@@ -2,11 +2,11 @@ import { sql } from "./db.js";
 
 sql`
 CREATE TABLE item (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    model VARCHAR(100),
-    date DATE DEFAULT CURRENT_DATE,
-    category VARCHAR(100)
+    id UUID PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Model VARCHAR(100),
+    Date DATE DEFAULT CURRENT_DATE,
+    Category VARCHAR(100)
 );
 `
 .then(() => {

@@ -1,24 +1,24 @@
 import {fastify} from 'fastify';
 
-import {DatabaseMemory} from './database-memory.js';
+import { Database } from './database.js';
 
 const server = fastify();   
 
-const database = new DatabaseMemory();
+const database = new Database();
 
 server.get('/', () => {
-    return 'Just sai hi bitch!';
+    
 });
 
 server.get('/home', () => {
-    return 'Hello, World!';
+
 });
 
-server.post('/stock', (req, reply) => {
+server.post('/estoque', async (req, reply) => {
 
     const { Name, Model, Date, Category } = req.body;
 
-    database.create({
+    await database.create({
         Name,
         Model,
         Date,
@@ -29,16 +29,18 @@ server.post('/stock', (req, reply) => {
 
 });
 
-server.get('/stock', () => {
-    const item = database.list();
+server.get('/estoque', async (req, reply) => {
+    const search = req.query.search
+    
+    const items = await database.list(search);
 
-    return item;
+    return items;
 });
 
-server.put('/stock/:id', (req, reply) => {
+server.put('/estoque/:id', async (req, reply) => {
     const itemid = req.params.id;
 
-    const updatedItem = database.update(itemid, {
+    await database.update(itemid, {
         Name: req.body.Name,
         Model: req.body.Model,
         Date: req.body.Date,
@@ -48,16 +50,16 @@ server.put('/stock/:id', (req, reply) => {
     return reply.status(204).send();
 });
 
-server.delete('/stock/:id', (req, reply) => {
+server.delete('/estoque/:id', async (req, reply) => {
     const itemid = req.params.id;
 
-    database.delete(itemid);
+    await database.delete(itemid);
 
     return reply.status(204).send();
 });
 
 server.get('/financeiro', () => {
-    return 'Hello Bussiness world!';
+
 });
 
 server.listen({port: 3333,})

@@ -2,7 +2,7 @@ POST http://localhost:3333/stock
 Content-Type: application/json
 
 {
-    "Name": "Produto Teste",
+    "Name": "Produto novo",
     "Model": "Modelo Teste",
     "Date": "2025-01-01",
     "Category": "Example Category"
@@ -10,15 +10,16 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3333/stock
+GET http://localhost:3333/stock/9bbfce52-098e-4c98-8e27-e1478b4a14b4
+
 
 ###
 
-PUT http://localhost:3333/stock/daebe20b-59f3-44fa-a8fa-b05f993809d3
+PUT http://localhost:3333/stock/9bbfce52-098e-4c98-8e27-e1478b4a14b4
 Content-Type: application/json
 
 {
-    "Name": "Produto Atualizado",
+    "Name": "Deu Certo",
     "Model": "Modelo Teste",
     "Date": "2025-01-01",
     "Category": "Example Category"
@@ -26,4 +27,4 @@ Content-Type: application/json
 
 ###
 
-DELETE http://localhost:3333/stock/daebe20b-59f3-44fa-a8fa-b05f993809d3
+DELETE http://localhost:3333/stock/cad55d15-b4c8-4cef-aa2e-ae1743c89477
