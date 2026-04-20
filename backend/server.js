@@ -15,37 +15,42 @@ server.get('/home', () => {
 });
 
 server.post('/estoque', async (req, reply) => {
-
-    const { Name, Model, Date, Category } = req.body;
+    const { nome_item, modelo, categoria, quantidade } = req.body;
 
     await database.create({
-        Name,
-        Model,
-        Date,
-        Category
+        nome_item,
+        modelo,
+        categoria,
+        quantidade
     });
 
     return reply.status(201).send();
-
 });
 
-server.get('/estoque', async (req, reply) => {
-    const search = req.query.search
-    
-    const items = await database.list(search);
-
-    return items;
+server.get('/estoque', async (req) => {
+    const search = req.query.search;
+    return await database.list(search);
 });
 
 server.put('/estoque/:id', async (req, reply) => {
-    const itemid = req.params.id;
+    const id = req.params.id;
+    const { nome_item, modelo, categoria, quantidade } = req.body;
 
-    await database.update(itemid, {
-        Name: req.body.Name,
-        Model: req.body.Model,
-        Date: req.body.Date,
-        Category: req.body.Category
+    await database.update(id, {
+        nome_item,
+        modelo,
+        categoria,
+        quantidade
     });
+
+    return reply.status(204).send();
+});
+
+server.patch('/estoque/:id/quantidade', async (req, reply) => {
+    const id = req.params.id;
+    const { quantidade } = req.body;
+
+    await database.updateQuantidade(id, quantidade);
 
     return reply.status(204).send();
 });
@@ -57,6 +62,45 @@ server.delete('/estoque/:id', async (req, reply) => {
 
     return reply.status(204).send();
 });
+
+server.post('/usuarios', async (req, reply) => {
+    const { cnpj, nome, email, senha } = req.body;
+
+    await database.createUsuario({
+        cnpj,
+        nome,
+        email,
+        senha
+    });
+
+    return reply.status(201).send();
+});
+
+server.get('/usuarios', async () => {
+    const usuarios = await database.listUsuarios();
+    return usuarios;
+});
+
+server.put('/usuarios/:id', async (req, reply) => {
+    const usuarioId = req.params.id;
+    const { cnpj, nome, email, senha } = req.body;
+
+    await database.updateUsuario(usuarioId, {
+        cnpj,
+        nome,
+        email,
+        senha
+    });
+
+    return reply.status(204).send();
+});
+
+server.delete('/usuarios/:id', async (req, reply) => {
+    const usuarioId = req.params.id;
+    await database.deleteUsuario(usuarioId);
+    return reply.status(204).send();
+});
+
 
 server.get('/financeiro', () => {
 
