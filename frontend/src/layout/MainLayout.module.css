@@ -4,13 +4,14 @@
     height: 100dvh;
     width: 100vw;
     overflow: hidden;
-    background-color: #f9f9f9;
+    background-color: #1a1a1a;
 }
 
 .mainInner {
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    background-color: transparent;
 }
 
 .content {
@@ -23,7 +24,7 @@
 }
 
 .contentExpanded {
-    margin-left: 286px; 
+    margin-left: 286px;
 }
 
 .contentCollapsed {
@@ -31,7 +32,7 @@
 }
 
 @media (max-width: 768px) {
-    .contentExpanded, 
+    .contentExpanded,
     .contentCollapsed {
         margin-left: 0;
     }
@@ -39,7 +40,7 @@
 
 @media (min-width: 769px) {
     .contentExpanded {
-        margin-left: 286px; 
+        margin-left: 286px;
     }
 
     .contentCollapsed {

@@ -4,8 +4,8 @@
   left: 0;
   top: 0;
   height: 100vh;
-  border-right: 1px solid #ddd;
-  background: white;
+  border-right: 1px solid #2a2a2a;
+  background: #111111;
   transition: width 0.4s ease;
   padding-top: 20px;
   z-index: 1000;
@@ -30,20 +30,22 @@
 }
 
 .logo {
-  color: #4543d1;
+  color: #FF5A00;
   font-size: 1.5rem;
   font-weight: bold;
+  font-family: 'Barlow Condensed', sans-serif;
+  letter-spacing: 1px;
 }
 
 /* Toggler */
 .toggler {
   width: 35px;
   height: 35px;
-  color: #4543d1;
+  color: #FF5A00;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFF;
+  background: transparent;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -60,7 +62,7 @@
 }
 
 .toggler:hover {
-  background: #dde4fb;
+  background: #1e1e1e;
 }
 
 .toggler span {
@@ -95,7 +97,7 @@
   flex-direction: column;
   justify-content: space-between;
   flex: 1;
-  height: calc(100vh - 50px); /* Ajusta para o header e padding */
+  height: calc(100vh - 50px);
 }
 
 .secondaryNav {
@@ -113,7 +115,7 @@
 }
 
 .navLink {
-  color: #4543d1;
+  color: #888;
   text-decoration: none;
   padding: 12px 15px;
   white-space: nowrap;
@@ -125,16 +127,16 @@
   transition: 0.4s ease;
 }
 
-/* Hover e Estado Ativo Unificados */
+/* Hover e Estado Ativo */
 .navLink:hover,
 .navItem.active .navLink {
-  background: linear-gradient(90deg, #4543d1, #2e2d8b);
-  color: white;
+  background: #1e1e1e;
+  color: #FF5A00;
   transform: translateX(5px);
 }
 
 .navItem.active .navIcon {
-  color: white;
+  color: #FF5A00;
 }
 
 /* Indicador lateral no Ativo */
@@ -145,12 +147,13 @@
   top: 20%;
   height: 60%;
   width: 4px;
-  background: #fff;
+  background: #FF5A00;
   border-radius: 0 4px 4px 0;
 }
 
 .navLabel {
   transition: opacity 0.4s ease;
+  color: inherit;
 }
 
 .sidebar.collapsed .navLabel {
@@ -160,18 +163,21 @@
 
 /* Tooltips */
 .navTooltip {
-  background: linear-gradient(90deg, #4543d1, #2e2d8b);
+  background: #1e1e1e;
+  border: 1px solid #2a2a2a;
   padding: 6px 12px;
   border-radius: 8px;
   opacity: 0;
   display: none;
   pointer-events: none;
-  color: white;
+  color: #FF5A00;
   position: absolute;
   top: 0;
   left: calc(100% + 15px);
   white-space: nowrap;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .sidebar.collapsed .navItem:hover .navTooltip {
@@ -183,7 +189,6 @@
 }
 
 /* Dropdown */
-
 .arrow {
   margin-left: auto;
   font-size: 1.2rem !important;
@@ -214,13 +219,13 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: rgba(162, 0, 255, 0.05);
+  background: rgba(255, 90, 0, 0.05);
   border-radius: 0 0 8px 8px;
 }
 
 .dropdownLink {
   text-decoration: none;
-  color: #4543d1;
+  color: #888;
   font-size: 0.9rem;
   font-weight: 500;
   transition: 0.3s;
@@ -228,9 +233,8 @@
 }
 
 .dropdownLink:hover {
-  color: #4543d1;
+  color: #FF5A00;
   padding-left: 5px;
-  /* Efeito de deslize no hover */
 }
 
 @media (min-width: 769px) {
@@ -251,17 +255,14 @@
     padding-left: 55px;
   }
 
-  /* Quando NÃO estiver colapsada no mobile, ela entra na tela */
   .sidebar:not(.collapsed) {
     left: 0;
     box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
   }
 
-  /* No mobile, o estado 'collapsed' será o estado 'escondido' */
   .sidebar.collapsed {
     left: -100%;
     width: 250px;
-    /* Mantém a largura para quando abrir */
   }
 
   .sidebarHeader {
@@ -270,21 +271,18 @@
 
   .logo {
     display: block !important;
-    /* Sempre mostra o logo no mobile ao abrir */
     opacity: 1 !important;
   }
 
-  /* Esconde o botão de fechar original ou reposiciona */
   .sidebarToggler {
     right: 10px;
   }
 
-  /* Tooltips não fazem sentido em telas touch */
   .navTooltip {
     display: none !important;
   }
 
   .primaryNav {
-    transform: translateY(0); /* Reseta para não bugar no mobile */
+    transform: translateY(0);
   }
 }

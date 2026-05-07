@@ -7,6 +7,10 @@ export const ROUTES = {
         path: '/login',
         name: 'Login'
     },
+    REGISTER: {              
+        path: '/register',
+        name: 'Register'
+    },
     SETTINGS: {
         path: '/settings',
         name: 'Settings'
