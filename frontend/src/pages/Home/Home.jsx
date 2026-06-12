@@ -1,9 +1,38 @@
 import styles from './Home.module.css';
 import TaskCard from '../../components/TaskCard/TaskCard.jsx';
+import DespesaChart from '../../components/DespesaChart/DespesaChart.jsx';
+import ListWidget from '../../components/ListWidget/ListWidget.jsx';
+import { useEffect } from 'react';
+import { useDespesaStore } from '../../store/useDespesaStore.js';
+import { useItemStore } from '../../store/useItemStore.js';
+import { useEstoqueStore } from '../../store/useEstoqueStore.js';
+import { useServicoStore } from '../../store/useServicoStore.js';
+import { ROUTES } from '../../constants/routes.constants.js';
+import CalendarWidget from '../../components/CalendarWidget/CalendarWidget.jsx';
 
 import logo from '../../../public/logo.png';
 
 const Home = () => {
+    const { despesas, fetchDespesas } = useDespesaStore();
+    const { items, fetchItems } = useItemStore();
+    const { estoque, fetchEstoque } = useEstoqueStore();
+    const { servicos, fetchServicos } = useServicoStore();
+
+    useEffect(() => {
+        if (despesas.length === 0) fetchDespesas();
+        if (items.length === 0) fetchItems();
+        if (estoque.length === 0) fetchEstoque();
+        if (servicos.length === 0) fetchServicos();
+    }, []);
+
+    const totalDespesas = despesas.reduce((acc, d) => acc + Number(d.valor || 0), 0);
+    const totalPagas = despesas
+        .filter(d => d.status === 'Paga')
+        .reduce((acc, d) => acc + Number(d.valor || 0), 0);
+    const totalPendentes = despesas
+        .filter(d => d.status === 'NÃO')
+        .reduce((acc, d) => acc + Number(d.valor || 0), 0);
+
     return (
         <main className={styles.container}>
 
@@ -18,89 +47,82 @@ const Home = () => {
             </section>
 
             <section className={styles.desempenho}>
-                <div className={styles.graficoArea}>
-                    <div className={styles.graficoTitle}>Desempenho Financeiro</div>
-                    <div className={styles.bars}>
-                        {[
-                            { mes: 'Jan', receita: 60, despesa: 40 },
-                            { mes: 'Fev', receita: 80, despesa: 50 },
-                            { mes: 'Mar', receita: 50, despesa: 70 },
-                            { mes: 'Abr', receita: 90, despesa: 45 },
-                            { mes: 'Mai', receita: 70, despesa: 55 },
-                            { mes: 'Jun', receita: 100, despesa: 60 },
-                        ].map((item) => (
-                            <div key={item.mes} className={styles.barGroup}>
-                                <div className={styles.barWrap}>
-                                    <div className={`${styles.bar} ${styles.receita}`} style={{ height: `${item.receita}px` }} />
-                                    <div className={`${styles.bar} ${styles.despesa}`} style={{ height: `${item.despesa}px` }} />
-                                </div>
-                                <span className={styles.barLabel}>{item.mes}</span>
-                            </div>
-                        ))}
-                    </div>
-                    <div className={styles.legend}>
-                        <div className={styles.legendItem}>
-                            <div className={`${styles.legendDot} ${styles.dotReceita}`} />
-                            Receita
-                        </div>
-                        <div className={styles.legendItem}>
-                            <div className={`${styles.legendDot} ${styles.dotDespesa}`} />
-                            Despesa
-                        </div>
-                    </div>
-                </div>
+                <DespesaChart despesas={despesas} />
 
                 <div className={styles.cardsWrapper}>
                     <div className={styles.card}>
-                        <h3>Receita Total</h3>
-                        <p className={`${styles.valor} ${styles.verde}`}>R$ 0,00</p>
-                    </div>
-                    <div className={styles.card}>
                         <h3>Despesa Total</h3>
-                        <p className={`${styles.valor} ${styles.vermelho}`}>R$ 0,00</p>
+                        <p className={`${styles.valor} ${styles.vermelho}`}>
+                            R$ {totalDespesas.toFixed(2)}
+                        </p>
                     </div>
                     <div className={styles.card}>
-                        <h3>Lucro Líquido</h3>
-                        <p className={`${styles.valor} ${styles.azul}`}>R$ 0,00</p>
+                        <h3>Despesas Pagas</h3>
+                        <p className={`${styles.valor} ${styles.verde}`}>
+                            R$ {totalPagas.toFixed(2)}
+                        </p>
                     </div>
                     <div className={styles.card}>
-                        <h3>Margem de Lucro</h3>
-                        <p className={`${styles.valor} ${styles.laranja}`}>0%</p>
+                        <h3>Despesas Pendentes</h3>
+                        <p className={`${styles.valor} ${styles.laranja}`}>
+                            R$ {totalPendentes.toFixed(2)}
+                        </p>
+                    </div>
+                    <div className={styles.card}>
+                        <h3>Qtd. de Despesas</h3>
+                        <p className={`${styles.valor} ${styles.azul}`}>{despesas.length}</p>
                     </div>
                 </div>
             </section>
 
             <section className={styles.atualizacoes}>
 
-                {/* Card Compromissos */}
-                <div className={styles.display}>
-                    <div className={styles.displayHeader}>
-                        <h2>Compromissos</h2>
-                        <span className={styles.displayBadge}>0</span>
-                    </div>
-                    <div className={styles.displayBody}>
-                        <div className={styles.displayEmpty}>
-                            <span className="material-symbols-rounded">event</span>
-                            Nenhum compromisso
-                        </div>
-                    </div>
-                </div>
+                <ListWidget
+                    title="Itens"
+                    icon="inventory"
+                    items={items}
+                    route={ROUTES.ITEMS.path}
+                    emptyText="Nenhum item"
+                    renderItem={(item) => (
+                        <>
+                            <span className={styles.itemNome}>{item.nome_item}</span>
+                            <span className={styles.itemInfo}>{item.categoria}</span>
+                        </>
+                    )}
+                />
 
-                <TaskCard />
+                <ListWidget
+                    title="Estoque"
+                    icon="store"
+                    items={estoque}
+                    route={ROUTES.ESTOQUE.path}
+                    emptyText="Nenhum registro de estoque"
+                    renderItem={(item) => (
+                        <>
+                            <span className={styles.itemNome}>{item.nome_item}</span>
+                            <span className={styles.itemInfo}>Qtd: {item.quantidade}</span>
+                        </>
+                    )}
+                />
 
-                <div className={styles.display}>
-                    <div className={styles.displayHeader}>
-                        <h2>Registros</h2>
-                        <span className={styles.displayBadge}>0</span>
-                    </div>
-                    <div className={styles.displayBody}>
-                        <div className={styles.displayEmpty}>
-                            <span className="material-symbols-rounded">receipt_long</span>
-                            Nenhum registro
-                        </div>
-                    </div>
-                </div>
+                <ListWidget
+                    title="Serviços"
+                    icon="build"
+                    items={servicos}
+                    route={ROUTES.SERVICOS.path}
+                    emptyText="Nenhum serviço"
+                    renderItem={(item) => (
+                        <>
+                            <span className={styles.itemNome}>{item.contratante}</span>
+                            <span className={styles.itemInfo}>{item.tipo}</span>
+                        </>
+                    )}
+                />
 
+            </section>
+
+            <section className={styles.calendario}>
+                <CalendarWidget />
             </section>
 
         </main>

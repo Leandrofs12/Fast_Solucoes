@@ -236,3 +236,7 @@
     .desempenho { grid-template-columns: 1fr; }
     .atualizacoes { grid-template-columns: 1fr; }
 }
+
+.calendario {
+    width: 100%;
+}

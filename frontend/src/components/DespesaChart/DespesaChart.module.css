@@ -1,0 +1,63 @@
+.dash {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    border: 0.5px solid #e0e0e0;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.toggle {
+    display: flex;
+    background: #f4f4f4;
+    border-radius: 8px;
+    padding: 3px;
+    gap: 2px;
+}
+
+.toggle button {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Barlow', sans-serif;
+    color: #888;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.toggle button.active {
+    background: #2980b9;
+    color: white;
+}
+
+.empty {
+    height: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 14px;
+    gap: 8px;
+}
+
+.empty span {
+    font-size: 32px;
+    color: #ddd;
+}
